@@ -1,0 +1,510 @@
+{
+  "info": {
+    "name": "API Profesores - Pruebas",
+    "description": "Colección de pruebas de la API de Administración de Profesores.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Crear profesor válido",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code es 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "pm.test(\"Respuesta contiene id y datos\", function () {",
+              "    var json = pm.response.json();",
+              "    pm.expect(json).to.have.property(\"id\");",
+              "    pm.expect(json.nombre).to.eql(\"Juan\");",
+              "    pm.collectionVariables.set(\"profesorId\", json.id);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-API-KEY",
+            "value": "{{apiKey}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/profesores",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "profesores"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Juan\",\n  \"apellido\": \"Pérez\",\n  \"correo\": \"juan.perez@correo.com\",\n  \"especialidad\": \"Matemáticas\",\n  \"estado\": \"ACTIVO\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "2. Crear segundo profesor (otra especialidad)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code es 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-API-KEY",
+            "value": "{{apiKey}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/profesores",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "profesores"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"María\",\n  \"apellido\": \"López\",\n  \"correo\": \"maria.lopez@correo.com\",\n  \"especialidad\": \"Física\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "3. Crear con nombre vacío",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code es 400\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-API-KEY",
+            "value": "{{apiKey}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/profesores",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "profesores"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"\",\n  \"apellido\": \"Pérez\",\n  \"correo\": \"juan.perez@correo.com\",\n  \"especialidad\": \"Matemáticas\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "4. Crear con apellido vacío",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code es 400\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-API-KEY",
+            "value": "{{apiKey}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/profesores",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "profesores"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Juan\",\n  \"apellido\": \"\",\n  \"correo\": \"juan.perez@correo.com\",\n  \"especialidad\": \"Matemáticas\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "5. Crear con correo inválido",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code es 400\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-API-KEY",
+            "value": "{{apiKey}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/profesores",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "profesores"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Juan\",\n  \"apellido\": \"Pérez\",\n  \"correo\": \"correo-invalido\",\n  \"especialidad\": \"Matemáticas\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "6. Listar todos",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code es 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Respuesta es un arreglo\", function () {",
+              "    pm.expect(pm.response.json()).to.be.an(\"array\");",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-API-KEY",
+            "value": "{{apiKey}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/profesores",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "profesores"
+          ]
+        }
+      }
+    },
+    {
+      "name": "7. Filtrar por especialidad",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code es 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Todos coinciden con la especialidad\", function () {",
+              "    pm.response.json().forEach(function (p) {",
+              "        pm.expect(p.especialidad.toLowerCase()).to.eql(\"matemáticas\");",
+              "    });",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-API-KEY",
+            "value": "{{apiKey}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/profesores?especialidad=matemáticas",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "profesores"
+          ],
+          "query": [
+            {
+              "key": "especialidad",
+              "value": "matemáticas"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "8. Consultar por id existente",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code es 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"El id coincide con profesorId\", function () {",
+              "    pm.expect(String(pm.response.json().id)).to.eql(String(pm.collectionVariables.get(\"profesorId\")));",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-API-KEY",
+            "value": "{{apiKey}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/profesores/{{profesorId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "profesores",
+            "{{profesorId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "9. Consultar por id inexistente (99999)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code es 404\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-API-KEY",
+            "value": "{{apiKey}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/profesores/99999",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "profesores",
+            "99999"
+          ]
+        }
+      }
+    },
+    {
+      "name": "10. Request sin API Key",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code es 401\", function () {",
+              "    pm.response.to.have.status(401);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/profesores",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "profesores"
+          ]
+        },
+        "description": "Prueba de seguridad: no envía X-API-KEY."
+      }
+    },
+    {
+      "name": "11. Request con API Key incorrecta",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code es 401\", function () {",
+              "    pm.response.to.have.status(401);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-API-KEY",
+            "value": "clave-incorrecta",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/profesores",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "profesores"
+          ]
+        },
+        "description": "Prueba de seguridad: X-API-KEY inválida."
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "apiKey",
+      "value": "examen-api-key-2026"
+    },
+    {
+      "key": "profesorId",
+      "value": ""
+    }
+  ]
+}
